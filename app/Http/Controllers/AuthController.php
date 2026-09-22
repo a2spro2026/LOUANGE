@@ -13,14 +13,12 @@ class AuthController extends Controller
     public function login(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
-            'statut' => ['required', 'in:admin,gerant,assistant,commercial,atelier'],
             'login' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
 
         $user = User::query()
             ->where('login', $credentials['login'])
-            ->where('statut', $credentials['statut'])
             ->first();
 
         if (! $user || ! Hash::check($credentials['password'], $user->password)) {
