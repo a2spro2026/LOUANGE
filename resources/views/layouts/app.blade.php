@@ -52,6 +52,39 @@
 
         body { min-height: 100vh; }
 
+        /* Pas de barre de défilement horizontale (chrome Windows) */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(201, 162, 39, 0.35) transparent;
+        }
+        *::-webkit-scrollbar {
+            width: 8px;
+            height: 0;
+        }
+        *::-webkit-scrollbar:vertical {
+            width: 8px;
+        }
+        *::-webkit-scrollbar:horizontal {
+            height: 0 !important;
+            display: none;
+        }
+        *::-webkit-scrollbar-button {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+        *::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        *::-webkit-scrollbar-thumb {
+            background: rgba(201, 162, 39, 0.35);
+        }
+        .table-wrap,
+        .main,
+        .content {
+            overflow-x: hidden;
+        }
+
         .amount,
         .num,
         .card__value,

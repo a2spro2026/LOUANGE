@@ -157,7 +157,8 @@
     .table-wrap {
         border: 1px solid var(--line);
         background: var(--panel);
-        overflow: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
         flex: 1;
     }
     .data-table {

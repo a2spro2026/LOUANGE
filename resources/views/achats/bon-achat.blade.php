@@ -372,7 +372,8 @@
         flex: 1;
         min-height: 16rem;
         max-height: calc(100vh - 18rem);
-        overflow: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
         border: 1px solid var(--line);
         background: var(--panel);
     }
@@ -380,7 +381,7 @@
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
-        min-width: 980px;
+        table-layout: fixed;
     }
     .data-table th,
     .data-table td {
@@ -388,7 +389,9 @@
         border-bottom: 1px solid rgba(128, 128, 128, 0.15);
         text-align: center;
         font-size: 0.86rem;
-        white-space: nowrap;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
         background: var(--panel);
     }
     .data-table th {
