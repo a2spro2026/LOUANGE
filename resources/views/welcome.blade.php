@@ -460,13 +460,6 @@
                 Se Connecter
             </button>
         </header>
-
-        <div class="hero__bottom">
-            <div class="hero__actions">
-                <a class="btn btn--gold" href="#stock">Voir les véhicules</a>
-                <a class="btn btn--ghost" href="#contact">Nous contacter</a>
-            </div>
-        </div>
     </section>
 
     <div
