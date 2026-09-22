@@ -13,6 +13,7 @@ class AuthController extends Controller
     public function login(Request $request): RedirectResponse
     {
         $credentials = $request->validate([
+            'statut' => ['required', 'in:gerant,commercial,assistant,atelier'],
             'login' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
@@ -22,6 +23,10 @@ class AuthController extends Controller
             ->first();
 
         if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            return back()->withErrors(['login' => 'Identifiants incorrects.']);
+        }
+
+        if ($user->statut !== 'admin' && $user->statut !== $credentials['statut']) {
             return back()->withErrors(['login' => 'Identifiants incorrects.']);
         }
 

@@ -491,6 +491,17 @@
                 @endif
 
                 <div class="login-field">
+                    <label for="statut">Statut</label>
+                    <select name="statut" id="statut" required autocomplete="off">
+                        <option value="" disabled selected>— Sélectionner —</option>
+                        <option value="gerant">Gérant</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="assistant">Assistante</option>
+                        <option value="atelier">Atelier</option>
+                    </select>
+                </div>
+
+                <div class="login-field">
                     <label for="login">Login</label>
                     <input
                         type="text"
@@ -535,7 +546,7 @@
                     overlay.classList.add('is-open');
                 });
                 document.body.classList.add('is-login-open');
-                document.getElementById('login').focus();
+                document.getElementById('statut').focus();
             }
 
             function closeLogin() {
@@ -545,6 +556,7 @@
                     if (!overlay.classList.contains('is-open')) {
                         overlay.hidden = true;
                         form.reset();
+                        document.getElementById('statut').selectedIndex = 0;
                     }
                 }, 250);
             }
