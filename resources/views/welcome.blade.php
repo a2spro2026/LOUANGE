@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>AUTO LOUNGE — L’excellence automobile</title>
     <meta name="description" content="Des voitures sélectionnées pour une conduite en toute confiance. Achat, vente, échange et financement.">
 
@@ -102,6 +102,9 @@
         .nav-cta {
             position: relative;
             appearance: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
             isolation: isolate;
             overflow: hidden;
@@ -464,9 +467,14 @@
 
         /* ——— Tablette ——— */
         @media (max-width: 1024px) {
+            .hero__media img {
+                object-position: 20% center;
+            }
             .hero__top {
-                padding: 1.15rem 1.5rem;
-                padding-top: max(1.15rem, env(safe-area-inset-top));
+                padding: 1.15rem 1.35rem;
+                padding-top: max(1.25rem, calc(env(safe-area-inset-top, 0px) + 0.85rem));
+                padding-right: max(1.35rem, env(safe-area-inset-right, 0px));
+                padding-left: max(1.35rem, env(safe-area-inset-left, 0px));
             }
             .nav-cta {
                 min-height: 2.75rem;
@@ -481,39 +489,45 @@
         /* ——— Mobile ——— */
         @media (max-width: 720px) {
             .hero__media img {
-                object-position: 28% center;
-                transform: scale(1.04);
+                /* Garde le branding AUTO LOUNGE (gauche de l’image) */
+                object-position: left 32%;
+                transform: none;
+                animation: none;
             }
             .hero__veil {
                 background:
-                    linear-gradient(180deg, rgba(8, 8, 10, 0.55) 0%, transparent 28%, transparent 72%, rgba(8, 8, 10, 0.5) 100%);
+                    linear-gradient(180deg, rgba(8, 8, 10, 0.58) 0%, rgba(8, 8, 10, 0.18) 28%, transparent 55%, rgba(8, 8, 10, 0.45) 100%);
             }
             .hero__top {
-                padding: 1rem 1rem;
-                padding-top: max(1rem, env(safe-area-inset-top));
-            }
-            .nav-cta {
-                width: auto;
-                min-height: 2.85rem;
-                padding: 0.75rem 1.15rem;
-                font-size: 0.72rem;
-                letter-spacing: 0.14em;
+                padding-top: max(1.35rem, calc(env(safe-area-inset-top, 0px) + 1rem));
+                padding-right: max(0.95rem, env(safe-area-inset-right, 0px));
+                padding-left: max(0.95rem, env(safe-area-inset-left, 0px));
+                padding-bottom: 0.75rem;
             }
             .hero__actions-top {
                 width: 100%;
-                justify-content: flex-end;
+                justify-content: stretch;
+                gap: 0.55rem;
+            }
+            .nav-cta {
+                flex: 1 1 0;
+                min-width: 0;
+                min-height: 2.95rem;
+                padding: 0.7rem 0.75rem;
+                font-size: 0.7rem;
+                letter-spacing: 0.12em;
             }
             .login-overlay {
                 align-items: flex-end;
                 padding: 0;
-                padding-bottom: env(safe-area-inset-bottom);
+                padding-bottom: env(safe-area-inset-bottom, 0px);
             }
             .login-panel {
                 width: 100%;
                 max-height: min(92dvh, 100%);
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
-                padding: 1.5rem 1.2rem calc(1.35rem + env(safe-area-inset-bottom));
+                padding: 1.5rem 1.2rem calc(1.35rem + env(safe-area-inset-bottom, 0px));
                 border-radius: var(--radius) var(--radius) 0 0;
                 transform: translateY(24px);
             }
@@ -540,9 +554,10 @@
 
         @media (max-width: 380px) {
             .nav-cta {
-                font-size: 0.68rem;
-                padding: 0.7rem 0.95rem;
-                letter-spacing: 0.12em;
+                font-size: 0.64rem;
+                padding: 0.65rem 0.55rem;
+                letter-spacing: 0.08em;
+                min-height: 2.85rem;
             }
         }
     </style>
@@ -551,7 +566,7 @@
     <section class="hero" aria-label="Accueil AUTO LOUNGE">
         <div class="hero__media" aria-hidden="true">
             <img
-                src="{{ asset('images/hero-showroom.jpg') }}?v=2"
+                src="{{ asset('images/hero-showroom.jpg') }}?v=3"
                 alt="Showroom AUTO LOUNGE — L’excellence automobile"
                 width="1376"
                 height="768"
