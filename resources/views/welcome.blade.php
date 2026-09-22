@@ -496,8 +496,8 @@
 
                 <div class="login-field">
                     <label for="statut">Statut</label>
-                    <select name="statut" id="statut" required autocomplete="off" data-lpignore="true" data-1p-ignore="true">
-                        <option value="" disabled selected>— Sélectionner —</option>
+                    <select name="statut" id="statut" autocomplete="off" data-lpignore="true" data-1p-ignore="true">
+                        <option value="" selected>— Sélectionner —</option>
                         <option value="gerant">Gérant</option>
                         <option value="commercial">Commercial</option>
                         <option value="assistant">Assistante</option>
@@ -583,7 +583,7 @@
                 document.body.classList.add('is-login-open');
                 window.setTimeout(function () {
                     clearLoginFields();
-                    statut.focus();
+                    login.focus();
                 }, 50);
             }
 
