@@ -43,6 +43,8 @@
 
         html, body {
             min-height: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
             font-family: "Outfit", sans-serif;
             background: var(--ink);
             color: var(--mist);
@@ -67,6 +69,8 @@
         .app {
             display: flex;
             min-height: 100vh;
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
         .sidebar {
