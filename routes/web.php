@@ -3,6 +3,7 @@
 use App\Http\Controllers\Achats\BonAchatController;
 use App\Http\Controllers\Achats\FicheVehiculeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Parametres\UtilisateurController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,8 @@ Route::get('/', function () {
 
     return view('welcome');
 })->name('home');
+
+Route::get('/catalogue', [CatalogueController::class, 'index'])->name('catalogue');
 
 Route::post('/connexion', [AuthController::class, 'login'])->name('connexion');
 

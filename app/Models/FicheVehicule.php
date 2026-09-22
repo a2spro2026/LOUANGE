@@ -13,9 +13,13 @@ class FicheVehicule extends Model
         'nom_proprietaire',
         'marque',
         'modele',
+        'titre',
+        'description',
         'kilometrage',
         'couleur',
         'montant_achat',
+        'montant_vente',
+        'en_catalogue',
         'photo_1',
         'photo_2',
         'photo_3',
@@ -27,7 +31,9 @@ class FicheVehicule extends Model
         return [
             'date_achat' => 'date',
             'montant_achat' => 'decimal:2',
+            'montant_vente' => 'decimal:2',
             'kilometrage' => 'integer',
+            'en_catalogue' => 'boolean',
         ];
     }
 
@@ -41,18 +47,41 @@ class FicheVehicule extends Model
         return $this->belongsTo(BonAchat::class);
     }
 
-    public function photoPrincipaleUrl(): ?string
+    public function titreAffiche(): string
     {
-        foreach (['photo_1', 'photo_2', 'photo_3'] as $field) {
-            if ($this->{$field}) {
-                return asset('storage/'.$this->{$field});
-            }
+        if (filled($this->titre)) {
+            return (string) $this->titre;
         }
 
-        if ($this->relationLoaded('bonAchat') && $this->bonAchat?->piece_jointe) {
-            return asset('storage/'.$this->bonAchat->piece_jointe);
+        $label = trim(($this->marque ?? '').' '.($this->modele ?? ''));
+
+        return $label !== '' ? $label : (string) ($this->bonAchat?->type_vehicule ?? 'Véhicule');
+    }
+
+    public function photoPrincipaleUrl(): ?string
+    {
+        foreach ($this->photosUrls() as $url) {
+            return $url;
         }
 
         return null;
+    }
+
+    /** @return list<string> */
+    public function photosUrls(): array
+    {
+        $urls = [];
+
+        foreach (['photo_1', 'photo_2', 'photo_3'] as $field) {
+            if ($this->{$field}) {
+                $urls[] = asset('storage/'.$this->{$field});
+            }
+        }
+
+        if ($urls === [] && $this->bonAchat?->piece_jointe) {
+            $urls[] = asset('storage/'.$this->bonAchat->piece_jointe);
+        }
+
+        return $urls;
     }
 }

@@ -75,6 +75,10 @@ class FicheVehiculeController extends Controller
             'kilometrage' => ['required', 'integer', 'min:0'],
             'couleur' => ['nullable', 'string', 'max:255'],
             'montant_achat' => ['required'],
+            'titre' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:5000'],
+            'montant_vente' => ['nullable'],
+            'en_catalogue' => ['nullable', 'boolean'],
             'photo_1' => ['nullable', 'image', 'max:10240'],
             'photo_2' => ['nullable', 'image', 'max:10240'],
             'photo_3' => ['nullable', 'image', 'max:10240'],
@@ -106,6 +110,23 @@ class FicheVehiculeController extends Controller
 
         $data['date_achat'] = $dateAchat;
         $data['montant_achat'] = MoneyFormat::format(MoneyFormat::parse($data['montant_achat']));
+
+        if (! empty($data['montant_vente'])) {
+            $data['montant_vente'] = MoneyFormat::format(MoneyFormat::parse($data['montant_vente']));
+        } else {
+            $data['montant_vente'] = null;
+        }
+
+        $data['en_catalogue'] = $request->boolean('en_catalogue');
+        $data['titre'] = isset($data['titre']) ? trim((string) $data['titre']) : null;
+        $data['description'] = isset($data['description']) ? trim((string) $data['description']) : null;
+        if ($data['titre'] === '') {
+            $data['titre'] = null;
+        }
+        if ($data['description'] === '') {
+            $data['description'] = null;
+        }
+
         unset($data['photo_1'], $data['photo_2'], $data['photo_3']);
 
         return $data;
@@ -141,6 +162,10 @@ class FicheVehiculeController extends Controller
             'kilometrage' => (string) $fiche->kilometrage,
             'couleur' => $fiche->couleur,
             'montant_achat' => montant_fr($fiche->montant_achat),
+            'titre' => $fiche->titre,
+            'description' => $fiche->description,
+            'montant_vente' => $fiche->montant_vente !== null ? montant_fr($fiche->montant_vente) : '',
+            'en_catalogue' => (bool) $fiche->en_catalogue,
             'photo_1' => $fiche->photo_1 ? asset('storage/'.$fiche->photo_1) : null,
             'photo_2' => $fiche->photo_2 ? asset('storage/'.$fiche->photo_2) : null,
             'photo_3' => $fiche->photo_3 ? asset('storage/'.$fiche->photo_3) : null,

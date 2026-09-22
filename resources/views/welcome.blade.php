@@ -90,6 +90,14 @@
             animation: rise 0.9s ease both;
         }
 
+        .hero__actions-top {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 0.65rem;
+        }
+
         .nav-cta {
             position: relative;
             appearance: none;
@@ -116,6 +124,23 @@
             text-shadow: 0 0 12px rgba(224, 197, 106, 0.55);
             animation: btn-glow 2.6s ease-in-out infinite;
             transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+        }
+
+        .nav-cta--ghost {
+            animation: none;
+            background: rgba(12, 12, 14, 0.45);
+            color: var(--mist);
+            border-color: rgba(242, 240, 236, 0.35);
+            box-shadow: none;
+            text-shadow: none;
+        }
+        .nav-cta--ghost::before { display: none; }
+        .nav-cta--ghost:hover {
+            border-color: var(--gold-soft);
+            color: var(--gold-soft);
+            background: rgba(201, 162, 39, 0.12);
+            box-shadow: 0 0 18px rgba(201, 162, 39, 0.2);
+            text-shadow: none;
         }
 
         .nav-cta::before {
@@ -471,6 +496,10 @@
                 font-size: 0.72rem;
                 letter-spacing: 0.14em;
             }
+            .hero__actions-top {
+                width: 100%;
+                justify-content: flex-end;
+            }
             .login-overlay {
                 align-items: flex-end;
                 padding: 0;
@@ -530,9 +559,12 @@
         <div class="hero__veil" aria-hidden="true"></div>
 
         <header class="hero__top">
-            <button type="button" class="nav-cta" id="open-login" aria-haspopup="dialog" aria-controls="login-overlay">
-                Se Connecter
-            </button>
+            <div class="hero__actions-top">
+                <a class="nav-cta nav-cta--ghost" href="{{ route('catalogue') }}">Catalogue</a>
+                <button type="button" class="nav-cta" id="open-login" aria-haspopup="dialog" aria-controls="login-overlay">
+                    Se Connecter
+                </button>
+            </div>
         </header>
     </section>
 
@@ -696,6 +728,10 @@
             @if ($errors->any())
             openLogin();
             @endif
+
+            if (location.hash === '#connexion') {
+                openLogin();
+            }
         })();
     </script>
 </body>

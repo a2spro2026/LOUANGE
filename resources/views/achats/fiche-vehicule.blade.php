@@ -49,6 +49,10 @@
                 data-kilometrage="{{ $fiche?->kilometrage ?? '' }}"
                 data-couleur="{{ $fiche?->couleur ?? '' }}"
                 data-montant="{{ $prixAchat }}"
+                data-titre="{{ $fiche?->titre ?? '' }}"
+                data-desc-catalogue="{{ $fiche?->description ?? '' }}"
+                data-montant-vente="{{ $fiche && $fiche->montant_vente !== null ? montant_fr($fiche->montant_vente) : '' }}"
+                data-en-catalogue="{{ $fiche && $fiche->en_catalogue ? '1' : '0' }}"
                 data-photo-bon="{{ $photoBon }}"
                 data-photo1="{{ $p1 }}"
                 data-photo2="{{ $p2 }}"
@@ -146,6 +150,25 @@
                 <label class="field">
                     <span>Montant Achat</span>
                     <input type="text" name="montant_achat" id="fv-montant" value="" placeholder="0.00" required autocomplete="off" inputmode="decimal">
+                </label>
+                <label class="field">
+                    <span>Titre catalogue</span>
+                    <input type="text" name="titre" id="fv-titre" value="" placeholder="Ex. BMW Série 3" autocomplete="off">
+                </label>
+                <label class="field field--full">
+                    <span>Description catalogue</span>
+                    <textarea name="description" id="fv-description" rows="3" placeholder="Points forts, état, options…" autocomplete="off"></textarea>
+                </label>
+                <label class="field">
+                    <span>Montant vente</span>
+                    <input type="text" name="montant_vente" id="fv-montant-vente" value="" placeholder="0.00" autocomplete="off" inputmode="decimal">
+                </label>
+                <label class="field field--check">
+                    <span>Catalogue public</span>
+                    <label class="check">
+                        <input type="checkbox" name="en_catalogue" id="fv-catalogue" value="1">
+                        Afficher dans le catalogue
+                    </label>
                 </label>
             </div>
 
@@ -469,12 +492,24 @@
     .field span {
         font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
     }
-    .field input {
-        background: transparent; border: 1px solid var(--line); color: var(--text);
+    .field input,
+    .field textarea {
+        background: transparent; border: 1px solid var(--line); color: var(--mist);
         padding: 0.55rem 0.65rem; font: inherit;
     }
-    html[data-theme="light"] .field input { background: #fff; }
-    .field input:focus { border-color: var(--gold); outline: none; }
+    .field textarea { resize: vertical; min-height: 4.5rem; }
+    html[data-theme="light"] .field input,
+    html[data-theme="light"] .field textarea { background: #fff; color: #1c1b18; }
+    .field input:focus,
+    .field textarea:focus { border-color: var(--gold); outline: none; }
+    .field--full { grid-column: 1 / -1; }
+    .field--check .check {
+        display: flex; align-items: center; gap: 0.55rem;
+        min-height: 2.55rem; font-size: 0.88rem; color: var(--mist); cursor: pointer;
+    }
+    .field--check input[type="checkbox"] {
+        width: 1.05rem; height: 1.05rem; accent-color: var(--gold);
+    }
     .panel__msg {
         margin-bottom: 0.85rem; padding: 0.65rem 0.8rem; border: 1px solid var(--line); font-size: 0.88rem;
     }
@@ -656,6 +691,10 @@
             kilometrage: card.dataset.kilometrage || '',
             couleur: card.dataset.couleur || '',
             montant: card.dataset.montant || '',
+            titre: card.dataset.titre || '',
+            descCatalogue: card.dataset.descCatalogue || '',
+            montantVente: card.dataset.montantVente || '',
+            enCatalogue: card.dataset.enCatalogue === '1',
             photoBon: card.dataset.photoBon || '',
             photo1: card.dataset.photo1 || '',
             photo2: card.dataset.photo2 || '',
@@ -720,6 +759,10 @@
         document.getElementById('fv-km').value = data.kilometrage || '';
         document.getElementById('fv-couleur').value = data.couleur || '';
         document.getElementById('fv-montant').value = data.montant || '';
+        document.getElementById('fv-titre').value = data.titre || '';
+        document.getElementById('fv-description').value = data.descCatalogue || '';
+        document.getElementById('fv-montant-vente').value = data.montantVente || '';
+        document.getElementById('fv-catalogue').checked = !!data.enCatalogue;
         setPhotoPreview(1, data.photo1 || '');
         setPhotoPreview(2, data.photo2 || '');
         setPhotoPreview(3, data.photo3 || '');
@@ -727,9 +770,13 @@
             document.getElementById('fv-file-' + n).value = '';
         });
 
-        formFv.querySelectorAll('input').forEach(function (el) {
+        formFv.querySelectorAll('input, textarea').forEach(function (el) {
             if (el.id === 'fv-method' || el.name === '_token' || el.id === 'fv-bon-id') return;
             if (el.type === 'file') {
+                el.disabled = !!readOnly;
+                return;
+            }
+            if (el.type === 'checkbox') {
                 el.disabled = !!readOnly;
                 return;
             }
@@ -862,6 +909,10 @@
         var raw = (this.value || '').replace(',', '.').replace(/\s/g, '');
         if (raw !== '' && !isNaN(raw)) this.value = Number(raw).toFixed(2);
     });
+    document.getElementById('fv-montant-vente').addEventListener('blur', function () {
+        var raw = (this.value || '').replace(',', '.').replace(/\s/g, '');
+        if (raw !== '' && !isNaN(raw)) this.value = Number(raw).toFixed(2);
+    });
 
     document.getElementById('btn-fv-voir').addEventListener('click', function () {
         setFields(dataFromForm(), true);
@@ -913,6 +964,10 @@
                 currentCard.dataset.kilometrage = data.fiche.kilometrage || '';
                 currentCard.dataset.couleur = data.fiche.couleur || '';
                 currentCard.dataset.montant = data.fiche.montant_achat || '';
+                currentCard.dataset.titre = data.fiche.titre || '';
+                currentCard.dataset.descCatalogue = data.fiche.description || '';
+                currentCard.dataset.montantVente = data.fiche.montant_vente || '';
+                currentCard.dataset.enCatalogue = data.fiche.en_catalogue ? '1' : '0';
                 currentCard.dataset.photo1 = data.fiche.photo_1 || '';
                 currentCard.dataset.photo2 = data.fiche.photo_2 || '';
                 currentCard.dataset.photo3 = data.fiche.photo_3 || '';
