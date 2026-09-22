@@ -28,7 +28,6 @@
                     <th>Contact</th>
                     <th>Login</th>
                     <th>Mot de passe</th>
-                    <th>Actif</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -48,11 +47,6 @@
                         <td>{{ $user->contact ?: '—' }}</td>
                         <td>{{ $user->login }}</td>
                         <td class="usr-pass">••••••••</td>
-                        <td>
-                            <span class="usr-actif {{ $user->actif ? 'is-on' : 'is-off' }}" title="{{ $user->actif ? 'Actif' : 'Suspendu' }}">
-                                {{ $user->actif ? 'Oui' : 'Non' }}
-                            </span>
-                        </td>
                         <td>
                             <div class="row-actions">
                                 <button type="button" class="act" title="Modifier" data-action="edit">
@@ -75,7 +69,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="empty">Aucun utilisateur.</td>
+                        <td colspan="6" class="empty">Aucun utilisateur.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -195,13 +189,6 @@
         letter-spacing: 0.12em;
         color: var(--muted);
     }
-    .usr-actif {
-        font-size: 0.78rem;
-        letter-spacing: 0.04em;
-        color: var(--muted);
-    }
-    .usr-actif.is-on { color: color-mix(in srgb, var(--muted) 70%, #6dbf8a 30%); }
-    .usr-actif.is-off { color: color-mix(in srgb, var(--muted) 75%, #d4845a 25%); }
 
     .row-actions { display: flex; gap: 0.35rem; align-items: center; }
     .inline-form { display: inline; margin: 0; }
@@ -246,11 +233,30 @@
         font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
     }
     .field input, .field select {
-        background: transparent; border: 1px solid var(--line); color: var(--text);
-        padding: 0.55rem 0.65rem; font: inherit;
+        background: rgba(0, 0, 0, 0.22);
+        border: 1px solid var(--line);
+        color: var(--mist);
+        padding: 0.55rem 0.65rem;
+        font: inherit;
+    }
+    .field select {
+        cursor: pointer;
+        color-scheme: dark;
+    }
+    .field select option {
+        background: #1e1e22;
+        color: #f2f0ec;
     }
     html[data-theme="light"] .field input,
-    html[data-theme="light"] .field select { background: #fff; }
+    html[data-theme="light"] .field select {
+        background: #fff;
+        color: #1c1b18;
+        color-scheme: light;
+    }
+    html[data-theme="light"] .field select option {
+        background: #fff;
+        color: #1c1b18;
+    }
     .field input:focus, .field select:focus { border-color: var(--gold); outline: none; }
     .field__hint { font-size: 0.75rem; color: var(--muted); }
     .panel__actions {
