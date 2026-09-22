@@ -26,9 +26,9 @@
                     <th>ID</th>
                     <th>Nom Complet</th>
                     <th>Contact</th>
-                    <th>Statut</th>
                     <th>Login</th>
                     <th>Mot de passe</th>
+                    <th>Actif</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -46,14 +46,13 @@
                         <td class="num">{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->contact ?: '—' }}</td>
-                        <td>
-                            <span class="usr-badge usr-badge--{{ $user->statut }}">{{ $user->statutLabel() }}</span>
-                            @unless ($user->actif)
-                                <span class="usr-badge usr-badge--off">Suspendu</span>
-                            @endunless
-                        </td>
                         <td>{{ $user->login }}</td>
                         <td class="usr-pass">••••••••</td>
+                        <td>
+                            <span class="usr-actif {{ $user->actif ? 'is-on' : 'is-off' }}" title="{{ $user->actif ? 'Actif' : 'Suspendu' }}">
+                                {{ $user->actif ? 'Oui' : 'Non' }}
+                            </span>
+                        </td>
                         <td>
                             <div class="row-actions">
                                 <button type="button" class="act" title="Modifier" data-action="edit">
@@ -196,21 +195,13 @@
         letter-spacing: 0.12em;
         color: var(--muted);
     }
-    .usr-badge {
-        display: inline-block;
-        padding: 0.15rem 0.45rem;
-        border: 1px solid var(--line);
-        font-size: 0.72rem;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        margin-right: 0.25rem;
+    .usr-actif {
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+        color: var(--muted);
     }
-    .usr-badge--gerant { color: var(--gold-soft); border-color: color-mix(in srgb, var(--gold) 40%, var(--line)); }
-    .usr-badge--assistant { color: #6aa3d4; border-color: rgba(106, 163, 212, 0.4); }
-    .usr-badge--commercial { color: #6dbf8a; border-color: rgba(109, 191, 138, 0.4); }
-    .usr-badge--atelier { color: #d4845a; border-color: rgba(212, 132, 90, 0.4); }
-    .usr-badge--admin { color: #c9a227; border-color: rgba(201, 162, 39, 0.45); }
-    .usr-badge--off { color: #e8a0a0; border-color: rgba(212, 90, 90, 0.4); }
+    .usr-actif.is-on { color: color-mix(in srgb, var(--muted) 70%, #6dbf8a 30%); }
+    .usr-actif.is-off { color: color-mix(in srgb, var(--muted) 75%, #d4845a 25%); }
 
     .row-actions { display: flex; gap: 0.35rem; align-items: center; }
     .inline-form { display: inline; margin: 0; }
