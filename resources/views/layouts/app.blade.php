@@ -132,6 +132,20 @@
             visibility: hidden;
         }
 
+        /* Masqué dès le premier paint (avant JS) */
+        html.sidebar-pref-hidden .sidebar {
+            width: 0 !important;
+            min-width: 0 !important;
+            max-width: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 0 !important;
+            opacity: 0 !important;
+            overflow: hidden !important;
+            pointer-events: none !important;
+            visibility: hidden !important;
+        }
+
         .sidebar__brand {
             display: flex;
             flex-direction: row;
@@ -706,14 +720,13 @@
         }
     </style>
     <script>
-        // Panneau masqué par défaut (avant rendu)
-        (function () {
-            try {
-                if (localStorage.getItem('al_sidebar_v2') !== 'shown') {
-                    document.documentElement.classList.add('sidebar-pref-hidden');
-                }
-            } catch (e) {}
-        })();
+        // Panneau latéral toujours masqué au chargement
+        document.documentElement.classList.add('sidebar-pref-hidden');
+        try {
+            localStorage.removeItem('al_sidebar');
+            localStorage.removeItem('al_sidebar_v2');
+            localStorage.setItem('al_sidebar_v3', 'hidden');
+        } catch (e) {}
     </script>
 </head>
 <body>
@@ -911,21 +924,22 @@
             sidebarBtn.addEventListener('click', function () {
                 const collapsed = app.classList.toggle('is-sidebar-collapsed');
                 sidebarBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-                localStorage.setItem('al_sidebar_v2', collapsed ? 'hidden' : 'shown');
+                if (collapsed) {
+                    document.documentElement.classList.add('sidebar-pref-hidden');
+                } else {
+                    document.documentElement.classList.remove('sidebar-pref-hidden');
+                }
             });
 
-            // Masqué par défaut ; ouvert seulement si demandé (nouvelle clé = reset ancien réglage)
-            localStorage.removeItem('al_sidebar');
-            if (localStorage.getItem('al_sidebar_v2') === 'shown') {
-                app.classList.remove('is-sidebar-collapsed');
-                document.documentElement.classList.remove('sidebar-pref-hidden');
-                sidebarBtn.setAttribute('aria-expanded', 'true');
-            } else {
-                app.classList.add('is-sidebar-collapsed');
-                document.documentElement.classList.add('sidebar-pref-hidden');
-                sidebarBtn.setAttribute('aria-expanded', 'false');
-                localStorage.setItem('al_sidebar_v2', 'hidden');
-            }
+            // Toujours masqué au chargement — ouvert uniquement via le bouton
+            app.classList.add('is-sidebar-collapsed');
+            document.documentElement.classList.add('sidebar-pref-hidden');
+            sidebarBtn.setAttribute('aria-expanded', 'false');
+            try {
+                localStorage.removeItem('al_sidebar');
+                localStorage.removeItem('al_sidebar_v2');
+                localStorage.setItem('al_sidebar_v3', 'hidden');
+            } catch (e) {}
 
             function applyTheme(theme) {
                 root.setAttribute('data-theme', theme);
