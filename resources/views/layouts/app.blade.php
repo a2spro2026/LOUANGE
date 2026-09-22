@@ -22,6 +22,7 @@
             --card-bg: linear-gradient(155deg, rgba(40, 38, 32, 0.95) 0%, rgba(20, 20, 22, 0.98) 100%);
             --text-strong: #fff;
             --sidebar-w: 16.5rem;
+            --radius: 50px;
         }
 
         html[data-theme="light"] {
@@ -37,6 +38,7 @@
             --navbar-bg: rgba(255, 253, 248, 0.94);
             --card-bg: linear-gradient(155deg, #ffffff 0%, #f7f3ea 100%);
             --text-strong: #121212;
+            --radius: 50px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -83,6 +85,50 @@
         .main,
         .content {
             overflow-x: hidden;
+        }
+
+        /* Coins 50/50 — barres & tableaux */
+        .table-wrap,
+        .navbar,
+        .btn,
+        .icon-btn,
+        .card,
+        .flash,
+        .dash-chart,
+        .panel,
+        .filters,
+        .module__toolbar,
+        .sidebar__link,
+        .sidebar__toggle,
+        .sidebar__sublink,
+        .sidebar__logout,
+        .sidebar__ico,
+        .act,
+        .field input,
+        .field select,
+        .field textarea,
+        .dash-chart__period,
+        .dash-chart__pill,
+        .dash-chart__year select,
+        .fv-card,
+        .fv-frame,
+        .fv-photo-frame,
+        .fv-photo-view,
+        .print-shell,
+        .overlay .panel,
+        .usr .table-wrap,
+        .cat-card {
+            border-radius: var(--radius);
+        }
+        .table-wrap {
+            overflow: hidden;
+            overflow-y: auto;
+        }
+        .data-table th:first-child {
+            border-top-left-radius: var(--radius);
+        }
+        .data-table th:last-child {
+            border-top-right-radius: var(--radius);
         }
 
         .amount,

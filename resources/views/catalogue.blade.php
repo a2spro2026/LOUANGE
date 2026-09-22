@@ -16,6 +16,7 @@
             --gold: #c9a227;
             --gold-soft: #e0c56a;
             --line: rgba(224, 197, 106, 0.22);
+            --radius: 50px;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body {
@@ -84,6 +85,7 @@
             cursor: pointer;
             color: inherit;
             background: transparent;
+            border-radius: var(--radius);
         }
         .btn--gold {
             background: var(--gold);
@@ -136,6 +138,8 @@
             display: flex;
             flex-direction: column;
             min-width: 0;
+            border-radius: var(--radius);
+            overflow: hidden;
             transition: border-color 0.2s ease, transform 0.2s ease;
         }
         .cat-card:hover {
@@ -248,6 +252,7 @@
             border: 1px solid rgba(224, 197, 106, 0.35);
             box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
             overflow: hidden;
+            border-radius: var(--radius);
         }
         .detail__gallery {
             position: relative;
@@ -400,7 +405,7 @@
             .detail__shell {
                 width: 100%;
                 max-height: 94dvh;
-                border-radius: 12px 12px 0 0;
+                border-radius: var(--radius) var(--radius) 0 0;
             }
         }
     </style>

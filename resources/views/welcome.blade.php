@@ -17,6 +17,7 @@
             --gold-soft: #e0c56a;
             --panel: #1a1a1d;
             --line: rgba(224, 197, 106, 0.35);
+            --radius: 50px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -123,6 +124,7 @@
                 inset 0 1px 0 rgba(255, 236, 180, 0.35);
             text-shadow: 0 0 12px rgba(224, 197, 106, 0.55);
             animation: btn-glow 2.6s ease-in-out infinite;
+            border-radius: var(--radius);
             transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
         }
 
@@ -204,6 +206,7 @@
             cursor: pointer;
             font-family: inherit;
             backdrop-filter: blur(6px);
+            border-radius: var(--radius);
             transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
         }
 
@@ -258,7 +261,7 @@
             position: relative;
             width: min(100%, 26rem);
             padding: 2rem 1.75rem 1.65rem;
-            border-radius: 2px;
+            border-radius: var(--radius);
             background:
                 linear-gradient(165deg, rgba(36, 34, 28, 0.96) 0%, rgba(16, 16, 18, 0.98) 55%, rgba(12, 12, 14, 0.99) 100%);
             border: 1px solid rgba(224, 197, 106, 0.38);
@@ -349,7 +352,7 @@
             font: inherit;
             font-size: 0.95rem;
             outline: none;
-            border-radius: 1px;
+            border-radius: var(--radius);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
             transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         }
@@ -511,7 +514,7 @@
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
                 padding: 1.5rem 1.2rem calc(1.35rem + env(safe-area-inset-bottom));
-                border-radius: 12px 12px 0 0;
+                border-radius: var(--radius) var(--radius) 0 0;
                 transform: translateY(24px);
             }
             .login-overlay.is-open .login-panel {
