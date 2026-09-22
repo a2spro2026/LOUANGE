@@ -34,7 +34,7 @@ class AuthController extends Controller
             return back()->withErrors(['login' => 'Compte suspendu.']);
         }
 
-        Auth::login($user);
+        Auth::login($user, false);
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard'));

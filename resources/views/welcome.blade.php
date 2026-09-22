@@ -481,7 +481,7 @@
             <h2 class="login-panel__title" id="login-title">Connexion</h2>
             <span class="login-panel__subtitle">Espace sécurisé</span>
 
-            <form method="POST" action="{{ route('connexion') }}" autocomplete="off" id="login-form">
+            <form method="POST" action="{{ route('connexion') }}" autocomplete="off" id="login-form" novalidate data-lpignore="true" data-1p-ignore="true">
                 @csrf
 
                 @if ($errors->any())
@@ -490,9 +490,13 @@
                     </div>
                 @endif
 
+                {{-- leurres anti-autofill navigateur --}}
+                <input type="text" name="prevent_autofill_user" value="" tabindex="-1" aria-hidden="true" autocomplete="username" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+                <input type="password" name="prevent_autofill_pass" value="" tabindex="-1" aria-hidden="true" autocomplete="current-password" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+
                 <div class="login-field">
                     <label for="statut">Statut</label>
-                    <select name="statut" id="statut" required autocomplete="off">
+                    <select name="statut" id="statut" required autocomplete="off" data-lpignore="true" data-1p-ignore="true">
                         <option value="" disabled selected>— Sélectionner —</option>
                         <option value="gerant">Gérant</option>
                         <option value="commercial">Commercial</option>
@@ -509,6 +513,12 @@
                         id="login"
                         value=""
                         autocomplete="off"
+                        autocapitalize="off"
+                        autocorrect="off"
+                        spellcheck="false"
+                        data-lpignore="true"
+                        data-1p-ignore="true"
+                        readonly
                         required
                     >
                 </div>
@@ -520,7 +530,10 @@
                         name="password"
                         id="password"
                         value=""
-                        autocomplete="off"
+                        autocomplete="new-password"
+                        data-lpignore="true"
+                        data-1p-ignore="true"
+                        readonly
                         required
                     >
                 </div>
@@ -539,14 +552,39 @@
             const openBtn = document.getElementById('open-login');
             const closeBtn = document.getElementById('close-login');
             const form = document.getElementById('login-form');
+            const statut = document.getElementById('statut');
+            const login = document.getElementById('login');
+            const password = document.getElementById('password');
+
+            function clearLoginFields() {
+                form.reset();
+                statut.selectedIndex = 0;
+                login.value = '';
+                password.value = '';
+                login.setAttribute('readonly', 'readonly');
+                password.setAttribute('readonly', 'readonly');
+            }
+
+            function unlockField(el) {
+                el.removeAttribute('readonly');
+            }
+
+            login.addEventListener('focus', function () { unlockField(login); });
+            password.addEventListener('focus', function () { unlockField(password); });
+            login.addEventListener('mousedown', function () { unlockField(login); });
+            password.addEventListener('mousedown', function () { unlockField(password); });
 
             function openLogin() {
+                clearLoginFields();
                 overlay.hidden = false;
                 requestAnimationFrame(function () {
                     overlay.classList.add('is-open');
                 });
                 document.body.classList.add('is-login-open');
-                document.getElementById('statut').focus();
+                window.setTimeout(function () {
+                    clearLoginFields();
+                    statut.focus();
+                }, 50);
             }
 
             function closeLogin() {
@@ -555,8 +593,7 @@
                 window.setTimeout(function () {
                     if (!overlay.classList.contains('is-open')) {
                         overlay.hidden = true;
-                        form.reset();
-                        document.getElementById('statut').selectedIndex = 0;
+                        clearLoginFields();
                     }
                 }, 250);
             }
@@ -574,6 +611,19 @@
                 if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
                     closeLogin();
                 }
+            });
+
+            // Jamais de valeurs mémorisées (retour bfcache / rechargement)
+            window.addEventListener('pageshow', function () {
+                clearLoginFields();
+            });
+
+            form.addEventListener('submit', function () {
+                // Les leurres ne doivent pas partir au serveur
+                var decoyUser = form.querySelector('[name="prevent_autofill_user"]');
+                var decoyPass = form.querySelector('[name="prevent_autofill_pass"]');
+                if (decoyUser) decoyUser.disabled = true;
+                if (decoyPass) decoyPass.disabled = true;
             });
 
             @if ($errors->any())
