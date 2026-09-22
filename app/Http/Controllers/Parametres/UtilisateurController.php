@@ -14,6 +14,7 @@ class UtilisateurController extends Controller
     public function index(): View
     {
         $users = User::query()
+            ->where('statut', '!=', 'admin')
             ->orderBy('id')
             ->paginate(20);
 
@@ -44,6 +45,10 @@ class UtilisateurController extends Controller
 
     public function update(Request $request, User $utilisateur): RedirectResponse
     {
+        if ($utilisateur->statut === 'admin') {
+            return back()->withErrors(['user' => 'Compte introuvable.']);
+        }
+
         $data = $this->validated($request, $utilisateur);
 
         $payload = [
@@ -67,6 +72,10 @@ class UtilisateurController extends Controller
 
     public function toggleActif(User $utilisateur): RedirectResponse
     {
+        if ($utilisateur->statut === 'admin') {
+            return back()->withErrors(['user' => 'Compte introuvable.']);
+        }
+
         if ($utilisateur->id === auth()->id()) {
             return back()->withErrors(['user' => 'Vous ne pouvez pas suspendre votre propre compte.']);
         }
@@ -84,9 +93,6 @@ class UtilisateurController extends Controller
     private function validated(Request $request, ?User $existing = null): array
     {
         $statuts = array_keys(collect(User::STATUTS)->except('admin')->all());
-        if ($existing?->statut === 'admin') {
-            $statuts[] = 'admin';
-        }
 
         return $request->validate([
             'name' => ['required', 'string', 'max:255'],

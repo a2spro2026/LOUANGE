@@ -877,7 +877,9 @@
                     </button>
                     <div class="navbar__user">
                         <div class="navbar__user-name">{{ auth()->user()->name }}</div>
-                        <div class="navbar__user-role">{{ auth()->user()->statutLabel() }}</div>
+                        @if (auth()->user()->statut !== 'admin')
+                            <div class="navbar__user-role">{{ auth()->user()->statutLabel() }}</div>
+                        @endif
                     </div>
                 </div>
             </header>

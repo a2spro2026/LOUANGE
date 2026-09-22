@@ -309,12 +309,6 @@
         document.getElementById('usr-login').value = row.dataset.login || '';
         var statut = row.dataset.statut || '';
         var select = document.getElementById('usr-statut');
-        if (statut === 'admin') {
-            var opt = document.createElement('option');
-            opt.value = 'admin';
-            opt.textContent = 'Admin';
-            select.appendChild(opt);
-        }
         select.value = statut;
         passInput.required = false;
         passHint.hidden = false;
