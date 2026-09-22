@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Zerragui',
                 'email' => 'zerragui@autolounge.local',
                 'statut' => 'admin',
+                'actif' => true,
                 'password' => '0661755048',
             ]
         );
