@@ -434,9 +434,83 @@
             }
         }
 
+        /* ——— Tablette ——— */
+        @media (max-width: 1024px) {
+            .hero__top {
+                padding: 1.15rem 1.5rem;
+                padding-top: max(1.15rem, env(safe-area-inset-top));
+            }
+            .nav-cta {
+                min-height: 2.75rem;
+                padding: 0.72rem 1.25rem;
+            }
+            .login-panel {
+                width: min(100%, 28rem);
+                padding: 1.85rem 1.6rem 1.5rem;
+            }
+        }
+
+        /* ——— Mobile ——— */
         @media (max-width: 720px) {
             .hero__media img {
                 object-position: 28% center;
+                transform: scale(1.04);
+            }
+            .hero__veil {
+                background:
+                    linear-gradient(180deg, rgba(8, 8, 10, 0.55) 0%, transparent 28%, transparent 72%, rgba(8, 8, 10, 0.5) 100%);
+            }
+            .hero__top {
+                padding: 1rem 1rem;
+                padding-top: max(1rem, env(safe-area-inset-top));
+            }
+            .nav-cta {
+                width: auto;
+                min-height: 2.85rem;
+                padding: 0.75rem 1.15rem;
+                font-size: 0.72rem;
+                letter-spacing: 0.14em;
+            }
+            .login-overlay {
+                align-items: flex-end;
+                padding: 0;
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            .login-panel {
+                width: 100%;
+                max-height: min(92dvh, 100%);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                padding: 1.5rem 1.2rem calc(1.35rem + env(safe-area-inset-bottom));
+                border-radius: 12px 12px 0 0;
+                transform: translateY(24px);
+            }
+            .login-overlay.is-open .login-panel {
+                transform: translateY(0);
+            }
+            .login-panel__title {
+                font-size: 1.55rem;
+            }
+            .login-field input,
+            .login-field select {
+                min-height: 3rem;
+                font-size: 1rem;
+            }
+            .login-actions {
+                flex-direction: column;
+                gap: 0.65rem;
+            }
+            .login-actions .btn {
+                width: 100%;
+                min-height: 3rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .nav-cta {
+                font-size: 0.68rem;
+                padding: 0.7rem 0.95rem;
+                letter-spacing: 0.12em;
             }
         }
     </style>

@@ -258,6 +258,37 @@
         width: 100%;
         min-height: 280px;
     }
+
+    @media (max-width: 768px) {
+        .dash-chart {
+            padding: 1rem 0.95rem 0.95rem;
+            margin-top: 1rem;
+        }
+        .dash-chart__title {
+            font-size: 1.25rem;
+            letter-spacing: 0.08em;
+        }
+        .dash-chart__filters {
+            width: 100%;
+        }
+        .dash-chart__legend {
+            gap: 0.55rem 0.85rem;
+            font-size: 0.72rem;
+        }
+        .dash-chart__canvas-wrap {
+            min-height: 220px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .dash-chart__canvas-wrap {
+            min-height: 200px;
+        }
+        .dash-chart__pill {
+            padding: 0.4rem 0.65rem;
+            font-size: 0.68rem;
+        }
+    }
 </style>
 @endpush
 

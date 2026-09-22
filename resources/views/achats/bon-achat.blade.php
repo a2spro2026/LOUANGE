@@ -949,6 +949,23 @@
         .filters__grid { grid-template-columns: 1fr 1fr; }
         .panel__grid { grid-template-columns: 1fr; }
     }
+
+    @media (max-width: 560px) {
+        .filters__grid { grid-template-columns: 1fr; }
+        .module__toolbar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .module__footer {
+            justify-content: stretch;
+        }
+        .module__footer .btn {
+            flex: 1;
+        }
+        .table-wrap {
+            max-height: calc(100vh - 14rem);
+        }
+    }
 </style>
 @endpush
 

@@ -694,29 +694,117 @@
             .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
 
-        @media (max-width: 860px) {
-            .app { flex-direction: column; }
+        /* Tablette + mobile : panneau en tiroir */
+        @media (max-width: 1024px) {
+            .app {
+                flex-direction: row;
+            }
             .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                z-index: 40;
+                width: min(18rem, 86vw);
+                min-width: 0;
+                max-width: min(18rem, 86vw);
+                height: 100%;
+                max-height: 100dvh;
+                border-right: 1px solid var(--line);
+                border-bottom: 0;
+                box-shadow: 12px 0 40px rgba(0, 0, 0, 0.35);
+                transform: translateX(0);
+                transition: transform 0.28s ease, opacity 0.28s ease, visibility 0.28s ease;
+            }
+            .app.is-sidebar-collapsed .sidebar,
+            html.sidebar-pref-hidden .sidebar {
+                width: min(18rem, 86vw) !important;
+                min-width: 0 !important;
+                max-width: min(18rem, 86vw) !important;
+                max-height: 100dvh !important;
+                padding: 1.35rem 1rem 1.1rem !important;
+                border-right: 1px solid var(--line) !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: none;
+                transform: translateX(-105%);
+            }
+            .app:not(.is-sidebar-collapsed) .sidebar {
+                pointer-events: auto;
+                transform: translateX(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            .main {
                 width: 100%;
                 min-width: 0;
-                border-right: 0;
-                border-bottom: 1px solid var(--line);
             }
-            .app.is-sidebar-collapsed .sidebar {
-                width: 100% !important;
-                max-width: none !important;
-                max-height: 0 !important;
-                min-height: 0 !important;
-                padding: 0 !important;
-                border: 0 !important;
-                opacity: 0;
-                visibility: hidden;
+            .navbar {
+                padding: 0.85rem 1.15rem;
+                gap: 0.65rem;
             }
-            .nav-group__menu { margin-left: 0.5rem; }
+            .navbar__title {
+                font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+                letter-spacing: 0.1em;
+            }
+            .navbar__title-tag {
+                display: none;
+            }
+            .content {
+                padding: 1.15rem 1.1rem 1.75rem;
+            }
+            .nav-group__menu { margin-left: 0.35rem; }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+                align-items: center;
+                padding: 0.75rem 0.9rem;
+            }
+            .navbar__left {
+                flex: 1;
+                min-width: 0;
+                gap: 0.65rem;
+            }
+            .navbar__right {
+                gap: 0.55rem;
+            }
+            .navbar__user {
+                max-width: 7.5rem;
+            }
+            .navbar__user-name {
+                font-size: 0.8rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .navbar__title-comma { display: none; }
+            .cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.75rem;
+            }
+            .card {
+                padding: 1rem 1rem 0.95rem;
+            }
+            .card__value {
+                font-size: clamp(1.25rem, 5vw, 1.55rem);
+            }
         }
 
         @media (max-width: 560px) {
             .cards { grid-template-columns: 1fr; }
+            .navbar__title {
+                font-size: 1rem;
+                letter-spacing: 0.08em;
+            }
+            .content {
+                padding: 0.95rem 0.85rem 1.5rem;
+            }
+            .icon-btn {
+                width: 2.55rem;
+                height: 2.55rem;
+            }
         }
     </style>
     <script>
