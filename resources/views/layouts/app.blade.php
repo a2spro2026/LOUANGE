@@ -182,7 +182,7 @@
             flex-direction: column;
             gap: 0.35rem;
             flex: 1;
-            overflow-y: auto;
+            overflow: hidden;
             padding-right: 0.15rem;
             min-height: 0;
         }
