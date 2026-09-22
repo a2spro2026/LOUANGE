@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="STE LOUANGE AUTO">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c9a227"/>
+      <stop offset="55%" stop-color="#e8d48b"/>
+      <stop offset="100%" stop-color="#8a7020"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="56" fill="#0c0c0e" stroke="url(#g)" stroke-width="3"/>
+  <circle cx="60" cy="60" r="46" fill="none" stroke="url(#g)" stroke-width="1.2" opacity="0.55"/>
+  <path d="M28 68c8-22 22-34 32-34s24 12 32 34" fill="none" stroke="url(#g)" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M34 68h52c2 0 4 2 4 4v4c0 2-2 4-4 4H34c-2 0-4-2-4-4v-4c0-2 2-4 4-4z" fill="url(#g)"/>
+  <circle cx="42" cy="76" r="5.5" fill="#0c0c0e" stroke="#f2e6b8" stroke-width="1.6"/>
+  <circle cx="78" cy="76" r="5.5" fill="#0c0c0e" stroke="#f2e6b8" stroke-width="1.6"/>
+  <text x="60" y="52" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11" font-weight="700" letter-spacing="1.5" fill="#e8d48b">SLA</text>
+</svg>
