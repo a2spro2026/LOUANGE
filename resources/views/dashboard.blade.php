@@ -7,6 +7,36 @@
 @endsection
 
 @section('content')
+<div class="dash">
+    <div class="dash-switch">
+        <button
+            type="button"
+            class="dash-switch__btn dash-switch__btn--add"
+            id="btn-fv-add"
+            title="Ajouter un véhicule"
+            aria-label="Ajouter un véhicule"
+        >
+            <svg class="dash-switch__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <button
+            type="button"
+            class="dash-switch__btn {{ $showCatalogue ? 'is-on' : '' }}"
+            id="dash-toggle-cat"
+            aria-controls="dash-catalogue"
+            aria-expanded="{{ $showCatalogue ? 'true' : 'false' }}"
+            title="{{ $showCatalogue ? 'Masquer le catalogue' : 'Afficher le catalogue' }}"
+            aria-label="{{ $showCatalogue ? 'Masquer le catalogue' : 'Afficher le catalogue' }}"
+        >
+            <svg class="dash-switch__ico dash-switch__ico--show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="dash-switch__ico dash-switch__ico--hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.9 8.4 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+        </button>
+    </div>
+
+    <div id="dash-catalogue" @if (! $showCatalogue) hidden @endif>
+        @include('partials.fv-module', ['fiches' => $fiches, 'payloads' => $payloads, 'addButton' => false])
+    </div>
+
+    <div id="dash-overview" @if ($showCatalogue) hidden @endif>
     <div class="cards">
         <article class="card card--achats">
             <div class="card__top">
@@ -98,6 +128,7 @@
                 <h2 class="dash-chart__title" id="dash-chart-title">{{ $chart['title'] }}</h2>
             </div>
             <form class="dash-chart__filters" method="GET" action="{{ route('dashboard') }}" autocomplete="off" id="dash-chart-filters">
+                <input type="hidden" name="vue" value="stats">
                 <div class="dash-chart__period" role="group" aria-label="Période">
                     <button type="submit" name="periode" value="mois" class="dash-chart__pill {{ $chartMode === 'mois' ? 'is-active' : '' }}">Mois</button>
                     <button type="submit" name="periode" value="annee" class="dash-chart__pill {{ $chartMode === 'annee' ? 'is-active' : '' }}">Année</button>
@@ -129,10 +160,55 @@
             <canvas id="dash-performance-chart" height="110"></canvas>
         </div>
     </section>
+    </div>
+</div>
 @endsection
 
 @push('styles')
 <style>
+    .dash { position: relative; }
+    .dash-switch {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.6rem;
+        margin-bottom: 1.1rem;
+    }
+    .dash:has(#dash-catalogue:not([hidden])) .dash-switch {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 2;
+        margin: 0;
+    }
+    .dash:has(#dash-catalogue:not([hidden])) .fv .module__toolbar { padding-right: 7rem; }
+    .dash-switch__btn {
+        width: 2.9rem;
+        height: 2.9rem;
+        display: grid;
+        place-items: center;
+        padding: 0;
+        border: 1px solid color-mix(in srgb, var(--gold) 55%, var(--line));
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--gold) 8%, var(--panel));
+        color: var(--gold-soft);
+        cursor: pointer;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .dash-switch__btn:hover {
+        border-color: var(--gold);
+        box-shadow: 0 0 18px color-mix(in srgb, var(--gold) 25%, transparent);
+    }
+    .dash-switch__btn.is-on {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #121212;
+    }
+    .dash-switch__ico { width: 1.3rem; height: 1.3rem; }
+    .dash-switch__ico--hide { display: none; }
+    .dash-switch__btn.is-on .dash-switch__ico--show { display: none; }
+    .dash-switch__btn.is-on .dash-switch__ico--hide { display: block; }
+    #dash-catalogue[hidden], #dash-overview[hidden] { display: none !important; }
+
     .dash-chart {
         margin-top: 1.35rem;
         padding: 1.25rem 1.3rem 1.15rem;
@@ -293,6 +369,32 @@
 @endpush
 
 @push('scripts')
+<script>
+(function () {
+    var btn = document.getElementById('dash-toggle-cat');
+    var catalogue = document.getElementById('dash-catalogue');
+    var overview = document.getElementById('dash-overview');
+    btn.addEventListener('click', function () {
+        var show = catalogue.hidden;
+        var label = show ? 'Masquer le catalogue' : 'Afficher le catalogue';
+        catalogue.hidden = !show;
+        overview.hidden = show;
+        btn.classList.toggle('is-on', show);
+        btn.setAttribute('aria-expanded', show ? 'true' : 'false');
+        btn.setAttribute('title', label);
+        btn.setAttribute('aria-label', label);
+
+        var url = new URL(window.location.href);
+        if (show) url.searchParams.delete('vue');
+        else url.searchParams.set('vue', 'stats');
+        window.history.replaceState(null, '', url);
+    });
+
+    document.getElementById('btn-fv-add').addEventListener('click', function () {
+        if (catalogue.hidden) btn.click();
+    });
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
 <script>
 (function () {

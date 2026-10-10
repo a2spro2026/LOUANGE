@@ -16,9 +16,14 @@
             --gold: #c9a227;
             --gold-soft: #e0c56a;
             --panel: #1a1a1d;
-            --line: rgba(224, 197, 106, 0.35);
+            --line: rgba(242, 240, 236, 0.14);
+            --muted: rgba(242, 240, 236, 0.62);
+            --text-strong: #fff;
             --radius: 50px;
+            --fv-card-bg: rgba(14, 14, 16, 0.78);
         }
+
+        html { scroll-behavior: smooth; }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -49,9 +54,9 @@
         }
 
         .hero__media {
-            position: absolute;
+            position: fixed;
             inset: 0;
-            z-index: 0;
+            z-index: -2;
             overflow: hidden;
             background: #1a1a1c;
         }
@@ -69,9 +74,9 @@
         }
 
         .hero__veil {
-            position: absolute;
+            position: fixed;
             inset: 0;
-            z-index: 1;
+            z-index: -1;
             pointer-events: none;
             background:
                 linear-gradient(180deg, rgba(8, 8, 10, 0.42) 0%, transparent 22%, transparent 78%, rgba(8, 8, 10, 0.55) 100%);
@@ -131,23 +136,6 @@
             transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
         }
 
-        .nav-cta--ghost {
-            animation: none;
-            background: rgba(12, 12, 14, 0.45);
-            color: var(--mist);
-            border-color: rgba(242, 240, 236, 0.35);
-            box-shadow: none;
-            text-shadow: none;
-        }
-        .nav-cta--ghost::before { display: none; }
-        .nav-cta--ghost:hover {
-            border-color: var(--gold-soft);
-            color: var(--gold-soft);
-            background: rgba(201, 162, 39, 0.12);
-            box-shadow: 0 0 18px rgba(201, 162, 39, 0.2);
-            text-shadow: none;
-        }
-
         .nav-cta::before {
             content: "";
             position: absolute;
@@ -183,7 +171,7 @@
         .hero__bottom {
             margin-top: auto;
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             padding: clamp(1.25rem, 4vw, 2.75rem) clamp(1.25rem, 4vw, 3.5rem);
             animation: rise 1.05s 0.12s ease both;
         }
@@ -236,6 +224,112 @@
             border-color: rgba(242, 240, 236, 0.8);
             background: rgba(255, 255, 255, 0.08);
         }
+
+        .nav-cta--ghost {
+            animation: none;
+            background: rgba(12, 12, 14, 0.5);
+            color: var(--mist);
+            border-color: rgba(242, 240, 236, 0.35);
+            box-shadow: none;
+            text-shadow: none;
+        }
+        .nav-cta--ghost::before { display: none; }
+        .nav-cta--disabled,
+        .nav-cta--disabled:hover {
+            cursor: not-allowed;
+            opacity: 0.45;
+            filter: grayscale(1);
+            color: rgba(242, 240, 236, 0.7);
+            border-color: rgba(242, 240, 236, 0.25);
+            background: rgba(12, 12, 14, 0.5);
+            box-shadow: none;
+            transform: none;
+        }
+        .nav-cta--ghost:hover {
+            border-color: var(--gold-soft);
+            color: var(--gold-soft);
+            background: rgba(201, 162, 39, 0.12);
+            box-shadow: 0 0 18px rgba(201, 162, 39, 0.2);
+            text-shadow: none;
+        }
+
+        .hero__cue {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+            color: var(--mist);
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+        }
+        .hero__cue svg {
+            width: 2.6rem;
+            height: 2.6rem;
+            padding: 0.6rem;
+            border: 1px solid rgba(224, 197, 106, 0.6);
+            border-radius: 50%;
+            background: rgba(12, 12, 14, 0.5);
+            color: var(--gold-soft);
+            animation: cue-bounce 2.2s ease-in-out infinite;
+        }
+        .hero__cue:hover svg { background: rgba(201, 162, 39, 0.2); }
+
+        @keyframes cue-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+        }
+
+        /* ——— Catalogue public ——— */
+        .pub-cat {
+            position: relative;
+            padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1rem, 4vw, 3.5rem) clamp(3rem, 6vw, 5rem);
+            background: linear-gradient(180deg, rgba(8, 8, 10, 0.25) 0%, rgba(8, 8, 10, 0.78) 18%, rgba(8, 8, 10, 0.86) 100%);
+            backdrop-filter: blur(3px);
+        }
+        .pub-cat__inner { max-width: 84rem; margin: 0 auto; }
+        .pub-cat__head {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.35rem;
+            margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+        }
+        .pub-cat__eyebrow {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold-soft);
+        }
+        .pub-cat__title {
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: clamp(2.3rem, 5vw, 3.4rem);
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            line-height: 1;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(201, 162, 39, 0.3);
+        }
+        .pub-cat__title::after {
+            content: "";
+            display: block;
+            width: 4rem;
+            height: 2px;
+            margin: 0.75rem auto 0;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+        .pub-cat__sub {
+            margin-top: 0.4rem;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        .pub-cat .fv-card { backdrop-filter: blur(12px); }
 
         /* ——— Panneau connexion ——— */
         .login-overlay {
@@ -359,6 +453,32 @@
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
             transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         }
+
+        .login-input { position: relative; }
+        .login-input input { padding-right: 3.1rem; }
+        .login-input input.is-masked { -webkit-text-security: disc; }
+        .login-eye {
+            position: absolute;
+            top: 50%;
+            right: 0.45rem;
+            width: 2.2rem;
+            height: 2.2rem;
+            display: grid;
+            place-items: center;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: transparent;
+            color: rgba(224, 197, 106, 0.75);
+            cursor: pointer;
+            transform: translateY(-50%);
+        }
+        .login-eye:hover,
+        .login-eye.is-visible { color: var(--gold-soft); background: rgba(201, 162, 39, 0.12); }
+        .login-eye svg { width: 1.15rem; height: 1.15rem; }
+        .login-eye__hide,
+        .login-eye.is-visible .login-eye__show { display: none; }
+        .login-eye.is-visible .login-eye__hide { display: block; }
 
         .login-field select {
             cursor: pointer;
@@ -552,6 +672,49 @@
             }
         }
 
+        /* Téléphone en portrait : le panneau AUTO LOUNGE (≈ 11 %–45 % de la largeur de l’image) doit tenir entier */
+        @media (max-width: 720px) and (orientation: portrait) {
+            .hero__media::before {
+                content: "";
+                position: absolute;
+                inset: -40px;
+                background: var(--hero-img) 28% center / cover no-repeat;
+                filter: blur(24px) brightness(0.4) saturate(1.1);
+            }
+            .hero__media img {
+                position: absolute;
+                top: env(safe-area-inset-top, 0px);
+                left: 50%;
+                width: 270vw;
+                max-width: none;
+                height: auto;
+                object-fit: fill;
+                transform: translateX(-28.3%);
+                -webkit-mask-image: linear-gradient(180deg, #000 0, #000 80%, transparent 100%);
+                mask-image: linear-gradient(180deg, #000 0, #000 80%, transparent 100%);
+            }
+            .hero__veil {
+                background: linear-gradient(180deg, transparent 0%, transparent 62%, rgba(8, 8, 10, 0.55) 100%);
+            }
+            .hero__top {
+                order: 3;
+                margin-top: auto;
+                padding-top: 0.75rem;
+                padding-bottom: max(1.6rem, calc(env(safe-area-inset-bottom, 0px) + 1rem));
+            }
+            .hero:has(.hero__bottom) .hero__top { margin-top: 0; }
+            .hero__actions-top {
+                flex-direction: column-reverse;
+                align-items: stretch;
+                gap: 0.65rem;
+            }
+            .hero__actions-top .nav-cta {
+                flex: none;
+                width: 100%;
+            }
+            .hero__bottom { order: 2; padding-bottom: 0.5rem; }
+        }
+
         @media (max-width: 380px) {
             .nav-cta {
                 font-size: 0.64rem;
@@ -564,7 +727,7 @@
 </head>
 <body>
     <section class="hero" aria-label="Accueil AUTO LOUNGE">
-        <div class="hero__media" aria-hidden="true">
+        <div class="hero__media" aria-hidden="true" style="--hero-img: url('{{ asset('images/hero-showroom.jpg') }}?v=3')">
             <img
                 src="{{ asset('images/hero-showroom.jpg') }}?v=3"
                 alt="Showroom AUTO LOUNGE — L’excellence automobile"
@@ -578,13 +741,50 @@
 
         <header class="hero__top">
             <div class="hero__actions-top">
-                <a class="nav-cta nav-cta--ghost" href="{{ route('catalogue') }}">Catalogue</a>
+                @if ($cataloguePublic)
+                    <a class="nav-cta nav-cta--ghost" href="#catalogue">Catalogue</a>
+                @else
+                    <span class="nav-cta nav-cta--ghost nav-cta--disabled" role="link" aria-disabled="true" title="Catalogue bientôt disponible">Catalogue</span>
+                @endif
                 <button type="button" class="nav-cta" id="open-login" aria-haspopup="dialog" aria-controls="login-overlay">
                     Se Connecter
                 </button>
             </div>
         </header>
+
+        @if ($cataloguePublic)
+            <div class="hero__bottom">
+                <a class="hero__cue" href="#catalogue">
+                    Catalogue
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                </a>
+            </div>
+        @endif
     </section>
+
+    @if ($cataloguePublic)
+    <section class="pub-cat" id="catalogue" aria-labelledby="pub-cat-title">
+        <div class="pub-cat__inner">
+            <header class="pub-cat__head">
+                <p class="pub-cat__eyebrow">STE Louange Auto</p>
+                <h2 class="pub-cat__title" id="pub-cat-title">Catalogue</h2>
+                <p class="pub-cat__sub">
+                    {{ $fiches->count() }} {{ $fiches->count() > 1 ? 'véhicules disponibles' : 'véhicule disponible' }}
+                </p>
+            </header>
+
+            <div class="fv-grid" data-fv-grid>
+                @forelse ($fiches as $fiche)
+                    @include('partials.fv-card', ['fiche' => $fiche])
+                @empty
+                    <div class="fv-empty">Aucun véhicule disponible pour le moment.</div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    @include('partials.fv-catalogue', ['payloads' => $payloads, 'editable' => false])
+    @endif
 
     <div
         class="login-overlay"
@@ -622,37 +822,50 @@
                     </select>
                 </div>
 
+                <input type="hidden" name="login" id="login-value" value="">
+                <input type="hidden" name="password" id="password-value" value="">
+
                 <div class="login-field">
                     <label for="login">Login</label>
-                    <input
-                        type="text"
-                        name="login"
-                        id="login"
-                        value=""
-                        autocomplete="off"
-                        autocapitalize="off"
-                        autocorrect="off"
-                        spellcheck="false"
-                        data-lpignore="true"
-                        data-1p-ignore="true"
-                        readonly
-                        required
-                    >
+                    <div class="login-input">
+                        <input
+                            type="text"
+                            id="login"
+                            value=""
+                            autocomplete="off"
+                            autocapitalize="off"
+                            autocorrect="off"
+                            spellcheck="false"
+                            data-lpignore="true"
+                            data-1p-ignore="true"
+                            readonly
+                            required
+                        >
+                        <button type="button" class="login-eye" data-eye-for="login" title="Afficher la saisie" aria-label="Afficher la saisie">
+                            <svg class="login-eye__show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg class="login-eye__hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.9 8.4 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="login-field">
                     <label for="password">Mot de passe</label>
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        value=""
-                        autocomplete="new-password"
-                        data-lpignore="true"
-                        data-1p-ignore="true"
-                        readonly
-                        required
-                    >
+                    <div class="login-input">
+                        <input
+                            type="password"
+                            id="password"
+                            value=""
+                            autocomplete="new-password"
+                            data-lpignore="true"
+                            data-1p-ignore="true"
+                            readonly
+                            required
+                        >
+                        <button type="button" class="login-eye" data-eye-for="password" title="Afficher la saisie" aria-label="Afficher la saisie">
+                            <svg class="login-eye__show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg class="login-eye__hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6C3.9 8.4 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="login-actions">
@@ -672,14 +885,49 @@
             const statut = document.getElementById('statut');
             const login = document.getElementById('login');
             const password = document.getElementById('password');
+            const loginValue = document.getElementById('login-value');
+            const passwordValue = document.getElementById('password-value');
+            const cssMask = window.CSS && CSS.supports && CSS.supports('-webkit-text-security', 'disc');
+
+            if (!cssMask) {
+                login.type = 'password';
+                login.setAttribute('autocomplete', 'new-password');
+            }
+
+            function maskField(el, masked) {
+                if (el === login && cssMask) {
+                    el.classList.toggle('is-masked', masked);
+                } else {
+                    el.type = masked ? 'password' : 'text';
+                }
+                const eye = form.querySelector('[data-eye-for="' + el.id + '"]');
+                eye.classList.toggle('is-visible', !masked);
+                eye.title = masked ? 'Afficher la saisie' : 'Masquer la saisie';
+                eye.setAttribute('aria-label', eye.title);
+            }
+
+            function isMasked(el) {
+                return el === login && cssMask ? el.classList.contains('is-masked') : el.type === 'password';
+            }
+
+            form.querySelectorAll('[data-eye-for]').forEach(function (eye) {
+                eye.addEventListener('click', function () {
+                    const el = document.getElementById(eye.dataset.eyeFor);
+                    maskField(el, !isMasked(el));
+                });
+            });
 
             function clearLoginFields() {
                 form.reset();
                 statut.selectedIndex = 0;
                 login.value = '';
                 password.value = '';
+                loginValue.value = '';
+                passwordValue.value = '';
                 login.setAttribute('readonly', 'readonly');
                 password.setAttribute('readonly', 'readonly');
+                maskField(login, true);
+                maskField(password, true);
             }
 
             function unlockField(el) {
@@ -741,6 +989,10 @@
                 var decoyPass = form.querySelector('[name="prevent_autofill_pass"]');
                 if (decoyUser) decoyUser.disabled = true;
                 if (decoyPass) decoyPass.disabled = true;
+                loginValue.value = login.value;
+                passwordValue.value = password.value;
+                login.value = '';
+                password.value = '';
             });
 
             @if ($errors->any())

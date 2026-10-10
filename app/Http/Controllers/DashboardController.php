@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BonAchat;
+use App\Models\FicheVehicule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -22,11 +23,16 @@ class DashboardController extends Controller
             ? $this->chartByYear()
             : $this->chartByMonth($year);
 
+        $fiches = FicheVehicule::query()->with('bonAchat')->latest('id')->get();
+
         return view('dashboard', [
             'chart' => $chart,
             'chartYear' => $year,
             'chartMode' => $mode,
             'availableYears' => $this->availableYears(),
+            'fiches' => $fiches,
+            'payloads' => $fiches->mapWithKeys(fn (FicheVehicule $f) => [$f->id => $f->cataloguePayload(true)]),
+            'showCatalogue' => $request->query('vue') !== 'stats',
         ]);
     }
 

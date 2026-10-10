@@ -3,9 +3,9 @@
 use App\Http\Controllers\Achats\BonAchatController;
 use App\Http\Controllers\Achats\FicheVehiculeController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Parametres\UtilisateurController;
+use App\Models\FicheVehicule;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,10 +13,17 @@ Route::get('/', function () {
         return redirect()->route('dashboard');
     }
 
-    return view('welcome');
-})->name('home');
+    $cataloguePublic = config('louange.catalogue_public');
+    $fiches = $cataloguePublic
+        ? FicheVehicule::query()->with('bonAchat')->latest('id')->get()
+        : collect();
 
-Route::get('/catalogue', [CatalogueController::class, 'index'])->name('catalogue');
+    return view('welcome', [
+        'cataloguePublic' => $cataloguePublic,
+        'fiches' => $fiches,
+        'payloads' => $fiches->mapWithKeys(fn (FicheVehicule $f) => [$f->id => $f->cataloguePayload()]),
+    ]);
+})->name('home');
 
 Route::post('/connexion', [AuthController::class, 'login'])->name('connexion');
 

@@ -116,8 +116,7 @@
         .fv-photo-view,
         .print-shell,
         .overlay .panel,
-        .usr .table-wrap,
-        .cat-card {
+        .usr .table-wrap {
             border-radius: var(--radius);
         }
         .table-wrap {
